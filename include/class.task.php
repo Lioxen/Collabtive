@@ -3,6 +3,7 @@
  * This class provides methods to realize tasks
  *
  * @author Philipp Kiszka <info@o-dyn.de>
+ * @enhanced Electric Solutions GbR <info@electric-solutions.de> 
  * @name task
  * @package Collabtive
  * @version 0.5.5
@@ -29,12 +30,13 @@ class task {
      * @param string $end Date the task is due
      * @param string $title Title of the task (optional)
      * @param string $text Description of the task
+     * @param float $cost Cost of the task (in hour)
      * @param int $liste Tasklist the task is associated with
      * @param int $assigned ID of the user who has to complete the task
      * @param int $project ID of the project the task is associated with
      * @return int $insid New task's ID
      */
-    function add($end, $title, $text, $liste, $project)
+    function add($end, $title, $text, $cost, $liste, $project)
     {
         global $conn;
         $liste = (int) $liste;
@@ -48,8 +50,8 @@ class task {
 
         $start = time();
         // write to db
-        $insStmt = $conn->prepare("INSERT INTO tasks (start,end,title,text,liste,status,project) VALUES (?, ?, ?, ?, ?, 1, ?)");
-        $ins = $insStmt->execute(array($start, $end_fin, $title, $text, $liste, $project));
+        $insStmt = $conn->prepare("INSERT INTO tasks (start,end,title,text,cost,liste,status,project) VALUES (?, ?, ?, ?, ?, ?, 1, ?)");
+        $ins = $insStmt->execute(array($start, $end_fin, $title, $text, $cost, $liste, $project));
         if ($ins) {
             $insid = $conn->lastInsertId();
             // logentry
@@ -72,7 +74,7 @@ class task {
      * @param int $assigned ID of the user who has to complete the task
      * @return bool
      */
-    function edit($id, $end, $title, $text, $liste)
+    function edit($id, $end, $title, $text, $cost, $liste)
     {
         global $conn;
         $id = (int) $id;
@@ -80,9 +82,9 @@ class task {
 
         $end = strtotime($end);
 
-        $updStmt = $conn->prepare("UPDATE tasks SET `end`=?,`title`=?, `text`=?, `liste`=? WHERE ID = ?");
+        $updStmt = $conn->prepare("UPDATE tasks SET `end`=?,`title`=?, `text`=?, `cost`=?, `liste`=? WHERE ID = ?");
         $conn->query("DELETE FROM tasks_assigned WHERE `task` = $id");
-        $upd = $updStmt->execute(array($end, $title, $text, $liste, $id));
+        $upd = $updStmt->execute(array($end, $title, $text, $cost, $liste, $id));
 
         if ($upd) {
             $nameproject = $this->getNameProject($id);
@@ -224,7 +226,7 @@ class task {
         global $conn;
         $id = (int) $id;
 
-        $task = $conn->query("SELECT * FROM tasks WHERE ID = $id")->fetch();
+        $task = $conn->query("SELECT *,(SELECT SUM(hours) FROM timetracker WHERE task = $id GROUP BY task) AS actual FROM tasks WHERE ID = $id")->fetch();
         if (!empty($task)) {
             // format datestring according to dateformat option
             if (is_numeric($task['end'])) {

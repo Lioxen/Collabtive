@@ -79,7 +79,7 @@ tinyMCE.init({
 						theCal{$lists[list].ID}.relateTo = "endtask{$task.ID}";
 						theCal{$lists[list].ID}.getDatepicker("datepicker_task");
 					</script>
-
+					<div class="row"><label for="cost">{$langfile.costinhour}:</label><input type="text" class="text" name="cost" id="cost" value="{$task.cost}" realname = "{$langfile.costinhour}" required = "1"  /></div>
 					<div class="row"><label for="tasklist">{$langfile.tasklist}:</label>
 						<select name="tasklist" class="select" id="tasklist" required="1" realname="{$langfile.tasklist}">
 						{section name=tasklist loop=$tasklists}
@@ -100,7 +100,7 @@ tinyMCE.init({
 					<div class="row-butn-bottom">
 						<label>&nbsp;</label>
 						<button type="submit" onfocus="this.blur();">{$langfile.send}</button>
-						<button onclick="blindtoggle('form_edit');toggleClass('edit_butn','edit-active','edit');toggleClass('sm_task','smooth','nosmooth');return false;" onfocus="this.blur();" {if $showhtml != "no"} style="display:none;"{/if}>{$langfile.cancel}</button>
+						<button type="button" onclick="blindtoggle('form_edit');toggleClass('edit_butn','edit-active','edit');toggleClass('sm_task','smooth','nosmooth');return false;" onfocus="this.blur();" {if $showhtml != "no"} style="display:none;"{/if}>{$langfile.cancel}</button>
 					</div>
 
 

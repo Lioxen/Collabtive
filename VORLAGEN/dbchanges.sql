@@ -1,3 +1,4 @@
+########### 03/19/2013 ############
 CREATE TABLE IF NOT EXISTS `customer` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `company` varchar(255) NOT NULL,
@@ -20,3 +21,9 @@ CREATE TABLE IF NOT EXISTS `customer_assigned` (
   `project` int(10) NOT NULL,
   UNIQUE KEY `customerXproject` (`customer`,`project`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+########### 03/27/2013 ############
+ALTER TABLE `tasks` ADD `cost` DECIMAL( 10, 2 ) NOT NULL AFTER `text`;
+
+ALTER TABLE `timetracker` CHANGE `hours` `hours` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0';
+

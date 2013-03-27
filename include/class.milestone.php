@@ -3,6 +3,7 @@
  * This class provides methods to realize milestones
  *
  * @author Philipp Kiszka <info@o-dyn.de>
+ * @enhanced Electric Solutions GbR <info@electric-solutions.de> 
  * @name milestone
  * @package Collabtive
  * @version 1.0
@@ -233,7 +234,7 @@ class milestone {
         global $conn;
         $id = (int) $id;
 
-        $sel = $conn->query("SELECT * FROM milestones WHERE ID = $id");
+        $sel = $conn->query("SELECT a.* , SUM(DISTINCT  c.cost ) AS sumcost, SUM( d.hours ) AS sumhours FROM milestones AS a LEFT JOIN tasklist AS b ON a.ID = b.milestone LEFT JOIN tasks AS c ON b.ID = c.liste LEFT JOIN timetracker AS d ON c.ID = d.task WHERE a.ID=$id");
         $milestone = $sel->fetch();
 
         if (!empty($milestone)) {
@@ -247,7 +248,7 @@ class milestone {
             $milestone["name"] = stripslashes($milestone["name"]);
             $milestone["desc"] = stripslashes($milestone["desc"]);
 
-            $psel = $conn->query("SELECT name FROM projekte WHERE ID = $milestone[project]");
+            $psel = $conn->query(sprintf("SELECT name FROM projekte WHERE ID = %u",$milestone['project']));
             $pname = $psel->fetch();
             $pname = $pname[0];
             $milestone["pname"] = $pname;

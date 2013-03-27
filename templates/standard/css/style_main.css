@@ -2240,7 +2240,7 @@ th.cf, td.cf {
 }
 
 th.e, td.e {
-
+	width: 50px;
 }
 
 th.tools, td.tools {

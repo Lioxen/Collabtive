@@ -372,6 +372,8 @@ if ($action == "editform") {
     $mylog = (object) new mylog();
     $task = new task();
     $ptasks = $task->getProjectTasks($id, 1);
+    $pcosts = $project->getProjectCost($id);
+    $pactualcosts = $project->getProjectActualCost($id);
     $today = date("d");
 
     $log = $mylog->getProjectLog($id);
@@ -394,6 +396,8 @@ if ($action == "editform") {
 
     $template->assign("customers", $customers);
     $template->assign("project", $tproject);
+    $template->assign("pcosts", $pcosts);
+    $template->assign("pactualcosts", $pactualcosts);
     $template->assign("done", $done);
 
     $template->assign("ptasks", $ptasks);

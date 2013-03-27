@@ -1,6 +1,6 @@
 <?php
-$db_host = "";
-$db_name = "";
-$db_user = "";
-$db_pass = "";
+$db_host = "localhost";
+$db_name = "collabtive";
+$db_user = "collabtive";
+$db_pass = "npYztTZrhdRrha4a";
 ?>
