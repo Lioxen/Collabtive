@@ -22,6 +22,7 @@
 		theCal{$lists[list].ID}.getDatepicker("datepicker_task{$lists[list].ID}");
 	</script>
 
+	<div class="row"><label for="cost">{#costinhour#}:</label><input type="text" class="text" name="cost" id="cost"  realname = "{#costinhour#}" required = "1"  /></div>
 	<div class="row">
 		<label for="assigned" >{#assignto#}:</label>
 		<select name="assigned[]" multiple="multiple" style = "height:80px;" id="assigned" required = "1" exclude = "-1" realname = "{#assignto#}" >

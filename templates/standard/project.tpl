@@ -44,6 +44,9 @@
 				{if $project.daysleft != "" || $project.daysleft == "0"}
 					<li {if $project.daysleft < 0}class="red"{elseif $project.daysleft == "0"}class="green"{/if}><a>{$project.daysleft} {#daysleft#}</a></li>
 				{/if}
+				{if $pcosts.cost !=""}
+					<li><a>{#target#}/{#actual#}: {$pcosts.cost}/<span {if $pactualcosts.hours > $pcosts.cost}class="red"{else}class="green"{/if}>{if $pactualcosts.hours > 0}{$pactualcosts.hours}{else}0.00{/if}</span></a></li>
+				{/if}
 			</ul>
 
 			<div class="status">

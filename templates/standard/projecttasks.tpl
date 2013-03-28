@@ -82,7 +82,7 @@
 						<a class="del" href="javascript:confirmit('{#confirmdel#}','managetasklist.php?action=del&amp;tlid={$lists[list].ID}&amp;id={$project.ID}');"><span>{#delete#}</span></a>
 					{/if}
 					{if $userpermissions.tasks.add}
-						<a class="add" href="javascript:blindtoggle('form_{$lists[list].ID}');" id="add_{$lists[list].ID}" onclick="toggleClass(this,'add-active','add');toggleClass('add_butn_{$lists[list].ID}','butn_link_active','butn_link');toggleClass('sm_{$lists[list].ID}','smooth','nosmooth');"><span>{#addtask#}</span></a>
+						<a class="add" href="javascript:blindtoggle('form_{$lists[list].ID}');" id="add_{$lists[list].ID}" onclick="Effect.BlindUp('editform_{$lists[list].ID}');toggleClass(this,'add-active','add');toggleClass('add_butn_{$lists[list].ID}','butn_link_active','butn_link');toggleClass('sm_{$lists[list].ID}','smooth','nosmooth');"><span>{#addtask#}</span></a>
 					{/if}
 				</div>
 
@@ -99,7 +99,9 @@
 						{include file="addtask.tpl" }
 					</div>
 				{/if}
-
+				{if $userpermissions.tasks.edit}
+					<div id = "editform_{$lists[list].ID}" class="addmenue" style = "display:none;"></div>
+				{/if}
 				<div class="nosmooth" id="sm_{$lists[list].ID}">
 					<table id="acc_{$lists[list].ID}" cellpadding="0" cellspacing="0" border="0">
 
@@ -108,6 +110,8 @@
 								<th class="a"></th>
 								<th class="b">{#tasks#}</th>
 								<th class="c">{#user#}</th>
+								<th class="e">{#target#}</th>
+								<th class="e">{#actual#}</th>
 								<th class="days" style="text-align:right">{#daysleft#}&nbsp;&nbsp;</th>
 								<th class="tools"></th>
 							</tr>
@@ -115,7 +119,7 @@
 
 						<tfoot>
 							<tr>
-								<td colspan="5"></td>
+								<td colspan="7"></td>
 							</tr>
 						</tfoot>
 
@@ -149,10 +153,12 @@
 											<a href="manageuser.php?action=profile&amp;id={$lists[list].tasks[task].users[theusers].ID}">{$lists[list].tasks[task].users[theusers].name|truncate:30:"...":true}</a>
 										{/section}
 									</td>
+									<td class="e">{$lists[list].tasks[task].cost}</td>
+									<td {if $lists[list].tasks[task].cost < $lists[list].tasks[task].actual} class="e marker-late"{else} class="e marker-today"{/if}>{$lists[list].tasks[task].actual}</td>
 									<td style="text-align:right">{$lists[list].tasks[task].daysleft}&nbsp;&nbsp;</td>
 									<td class="tools">
 										{if $userpermissions.tasks.edit}
-										<a class="tool_edit" href="javascript:void(0);"  onclick = "change('managetask.php?action=editform&amp;tid={$lists[list].tasks[task].ID}&amp;id={$project.ID}','form_{$lists[list].ID}');toggleClass(this,'tool_edit_active','tool_edit');blindtoggle('form_{$lists[list].ID}');" title="{#edit#}"></a>
+										<a class="tool_edit" href="javascript:void(0);"  onclick = "change('managetask.php?action=editform&amp;tid={$lists[list].tasks[task].ID}&amp;id={$project.ID}','editform_{$lists[list].ID}');Effect.BlindUp('form_{$lists[list].ID}');toggleClass(this,'tool_edit_active','tool_edit');blindtoggle('editform_{$lists[list].ID}');" title="{#edit#}"></a>
 										{/if}
 										{if $userpermissions.tasks.del}
 										<a class="tool_del" href="javascript:confirmfunction('{#confirmdel#}','deleteElement(\'task_{$lists[list].tasks[task].ID}\',\'managetask.php?action=del&amp;tid={$lists[list].tasks[task].ID}&amp;id={$project.ID}\')');"  title="{#delete#}"></a>
@@ -161,7 +167,7 @@
 								</tr>
 
 								<tr class="acc">
-									<td colspan="5">
+									<td colspan="7">
 										<div class="accordion_toggle"></div>
 										<div class="accordion_content">
 											<div class="acc-in">
@@ -261,7 +267,7 @@
 			<div class="tablemenue">
 				<div class="tablemenue-in">
 					{if $userpermissions.tasks.add}
-						<a class="butn_link" href="javascript:blindtoggle('form_{$lists[list].ID}');" id="add_butn_{$lists[list].ID}" onclick="toggleClass('add_{$lists[list].ID}','add-active','add');toggleClass(this,'butn_link_active','butn_link');toggleClass('sm_{$lists[list].ID}','smooth','nosmooth');">{#addtask#}</a>
+						<a class="butn_link" href="javascript:blindtoggle('form_{$lists[list].ID}');" id="add_butn_{$lists[list].ID}" onclick="Effect.BlindUp('editform_{$lists[list].ID}');toggleClass('add_{$lists[list].ID}','add-active','add');toggleClass(this,'butn_link_active','butn_link');toggleClass('sm_{$lists[list].ID}','smooth','nosmooth');">{#addtask#}</a>
 					{/if}
 					<a class="butn_link" href="javascript:blindtoggle('doneblock_{$lists[list].ID}');" id="donebutn_{$lists[list].ID}" onclick="toggleClass(this,'butn_link_active','butn_link');toggleClass('toggle-done-{$lists[list].ID}','acc-toggle','acc-toggle-active');">{#donetasks#}</a>
 				</div>

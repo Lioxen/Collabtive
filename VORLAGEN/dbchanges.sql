@@ -21,4 +21,9 @@ CREATE TABLE IF NOT EXISTS `customer_assigned` (
   UNIQUE KEY `customerXproject` (`customer`,`project`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ALTER TABLE `roles` ADD `customers` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `milestones`
+ALTER TABLE `roles` ADD `customers` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `milestones`;
+
+########### 03/27/2013 ############
+ALTER TABLE `tasks` ADD `cost` DECIMAL( 10, 2 ) NOT NULL AFTER `text`;
+
+ALTER TABLE `timetracker` CHANGE `hours` `hours` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0';

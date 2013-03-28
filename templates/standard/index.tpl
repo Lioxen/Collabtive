@@ -34,7 +34,7 @@
 					<a href="javascript:void(0);" id="projecthead_toggle" class="{$projectbar}" onclick = "toggleBlock('projecthead');"></a>
 						{if $userpermissions.projects.add}
 							<div class="wintools">
-								<a class="add" href="javascript:blindtoggle('form_addmyproject');" id="add_myprojects" onclick="Effect.BlindUp('form_edit');toggleClass(this,'add-active','add');toggleClass('add_butn_myprojects','butn_link_active','butn_link');"><span>{#addproject#}</span></a>
+								<a class="add" href="javascript:blindtoggle('form_addmyproject');" id="add_myprojects" onclick="Effect.BlindUp('form_editmyproject');toggleClass(this,'add-active','add');toggleClass('add_butn_myprojects','butn_link_active','butn_link');"><span>{#addproject#}</span></a>
 							</div>
 						{/if}
 					<h2>
@@ -46,7 +46,7 @@
 					<div id = "form_addmyproject" class="addmenue" style = "display:none;">
 						{include file="addproject.tpl" myprojects="1"}
 					</div>
-					<div id = "form_edit" class="addmenue" style = "display:none;"></div>
+					<div id = "form_editmyproject" class="addmenue" style = "display:none;"></div>
 				<div class="nosmooth" id="sm_deskprojects">
 					<table id = "desktopprojects" cellpadding="0" cellspacing="0" border="0">
 						<thead>
@@ -108,7 +108,7 @@
 									<td style="text-align:right">{$myprojects[project].daysleft}&nbsp;&nbsp;</td>
 									<td class="tools">
 										{if $userpermissions.projects.edit}
-											<a id="edit_butn{$myprojects[project].ID}" class="tool_edit" href="javascript:void(0);" onclick = "change('manageproject.php?action=editform&amp;id={$myprojects[project].ID}','form_edit');Effect.BlindUp('form_addmyproject');toggleClass(this,'tool_edit_active','tool_edit');blindtoggle('form_edit');" title="{#edit#}"></a>{/if}
+											<a id="edit_butn{$myprojects[project].ID}" class="tool_edit" href="javascript:void(0);" onclick = "change('manageproject.php?action=editform&amp;id={$myprojects[project].ID}','form_editmyproject');Effect.BlindUp('form_addmyproject');toggleClass(this,'tool_edit_active','tool_edit');blindtoggle('form_editmyproject');" title="{#edit#}"></a>{/if}
 										{if $userpermissions.projects.del}
 											<a class="tool_del" href="javascript:confirmfunction('{#confirmdel#}','deleteElement(\'proj_{$myprojects[project].ID}\',\'manageproject.php?action=del&amp;id={$myprojects[project].ID}\')');"  title="{#delete#}"></a>
 										{/if}
@@ -156,6 +156,9 @@
 															<td>{#url#}:</td>
 															<td><a href="{$myprojects[project].url}" target="_blank">{$myprojects[project].url}</a></td>
 														</tr>
+														<tr>
+															<td colspan="4">{$myprojects[project].desc}</td>
+														</tr>
 													</table>
 												</div>{*assign users end*}
 
@@ -170,7 +173,7 @@
 					<div class="tablemenue">
 						<div class="tablemenue-in">
 							{if $userpermissions.projects.add}
-								<a class="butn_link" href="javascript:blindtoggle('form_addmyproject');" id="add_butn_myprojects" onclick="Effect.BlindUp('form_edit');toggleClass('add_myprojects','add-active','add');toggleClass(this,'butn_link_active','butn_link');toggleClass('sm_deskprojects','smooth','nosmooth');">{#addproject#}</a>
+								<a class="butn_link" href="javascript:blindtoggle('form_addmyproject');" id="add_butn_myprojects" onclick="Effect.BlindUp('form_editmyproject');toggleClass('add_myprojects','add-active','add');toggleClass(this,'butn_link_active','butn_link');toggleClass('sm_deskprojects','smooth','nosmooth');">{#addproject#}</a>
 							{/if}
 						</div>
 					</div>
@@ -207,7 +210,7 @@
 					<div id = "form_addmytask" class="addmenue" style = "display:none;">
 						{include file="addmytask_index.tpl" }
 					</div>
-
+				<div id = "form_editmytask" class="addmenue" style = "display:none;"></div>
 				<div class="nosmooth" id="sm_desktoptasks">
 					<table id = "desktoptasks" cellpadding="0" cellspacing="0" border="0">
 						<thead>
@@ -215,7 +218,9 @@
 								<th class="a"></th>
 								<th class="b" style="cursor:pointer;" onclick = "sortBlock('desktoptasks','');">{#task#}</th>
 								<th class="c" style="cursor:pointer;" onclick = "sortBlock('desktoptasks','project');">{#project#}</th>
-								<th class="d" style="cursor:pointer;text-align:right" onclick = "sortBlock('desktoptasks','daysleft');">{#daysleft#}&nbsp;&nbsp;</th>
+								<th class="e">{#target#}</th>
+								<th class="e">{#actual#}</th>
+								<th class="days" style="cursor:pointer;text-align:right" onclick = "sortBlock('desktoptasks','daysleft');">{#daysleft#}&nbsp;&nbsp;</th>
 								<th class="tools"></th>
 							</tr>
 						</thead>
@@ -254,10 +259,12 @@
 									<td>
 										<a href = "managetask.php?action=showproject&amp;id={$tasks[task].project}">{$tasks[task].pname|truncate:30:"...":true}</a>
 									</td>
+									<td class="e">{$tasks[task].cost}</td>
+									<td {if $tasks[task].cost < $tasks[task].actual} class="e marker-late"{else} class="e marker-today"{/if}>{$tasks[task].actual}</td>
 									<td style="text-align:right">{$tasks[task].daysleft}&nbsp;&nbsp;</td>
 									<td class="tools">
 										{if $userpermissions.tasks.edit}
-											<a class="tool_edit" href="javascript:void(0);"  onclick = "change('managetask.php?action=editform&amp;tid={$tasks[task].ID}&amp;id={$tasks[task].project}','form_addmytask');toggleClass(this,'tool_edit_active','tool_edit');blindtoggle('form_addmytask');" title="{#edit#}"></a>
+											<a class="tool_edit" href="javascript:void(0);"  onclick = "change('managetask.php?action=editform&amp;tid={$tasks[task].ID}&amp;id={$tasks[task].project}','form_editmytask');Effect.BlindUp('form_addmytask');toggleClass(this,'tool_edit_active','tool_edit');blindtoggle('form_editmytask');" title="{#edit#}"></a>
 
 										{/if}
 										{if $userpermissions.tasks.del}
@@ -285,7 +292,7 @@
 					<div class="tablemenue">
 						<div class="tablemenue-in">
 							{if $userpermissions.tasks.add}
-								<a class="butn_link" href="javascript:void(0);" id="add_butn_mytasks" onclick="blindtoggle('form_addmytask');toggleClass(this,'butn_link_active','butn_link');toggleClass('sm_desktoptasks','smooth','nosmooth');">{#addtask#}</a>
+								<a class="butn_link" href="javascript:void(0);" id="add_butn_mytasks" onclick="Effect.BlindUp('form_editmytask');blindtoggle('form_addmytask');toggleClass(this,'butn_link_active','butn_link');toggleClass('sm_desktoptasks','smooth','nosmooth');">{#addtask#}</a>
 							{/if}
 						</div>
 					</div>

@@ -18,6 +18,7 @@ $assigned = getArrayVal($_POST, "assigned");
 $tasklist = getArrayVal($_POST, "tasklist");
 $text = getArrayVal($_POST, "text");
 $title = getArrayVal($_POST, "title");
+$cost = getArrayVal($_POST, "cost");
 $redir = getArrayVal($_GET, "redir");
 $id = getArrayVal($_GET, "id");
 
@@ -67,7 +68,7 @@ if ($action == "addform") {
         die();
     }
     // add the task
-    $tid = $task->add($end, $title, $text, $tasklist, $id);
+    $tid = $task->add($end, $title, $text, $cost, $tasklist, $id);
     // if tasks was added and mailnotify is activated, send an email
     if ($tid) {
         foreach($assigned as $member) {
@@ -142,7 +143,7 @@ if ($action == "addform") {
         die();
     }
     // edit the task
-    if ($task->edit($tid, $end, $title, $text, $tasklist)) {
+    if ($task->edit($tid, $end, $title, $text, $cost, $tasklist)) {
         $redir = urldecode($redir);
         if (!empty($assigned)) {
             foreach($assigned as $assignee) {

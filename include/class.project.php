@@ -3,6 +3,7 @@
  * Die Klasse stellt Methoden bereit um Projekte zu bearbeiten
  *
  * @author Open Dynamics <info@o-dyn.de>
+ * @enhanced Electric Solutions GbR <info@electric-solutions.de> 
  * @name project
  * @package Collabtive
  * @version 0.6
@@ -359,7 +360,51 @@ class project {
             return false;
         }
     }
+    
+    /**
+     * get the cost in hour of a project
+     * 
+     * @param int $id - the project id
+     * @return array|boolean - the cost or false on error
+     */
+    function getProjectCost($id){  	
+    	global $conn;
+    	$id = (int) $id;
+    	
+    	$sel = $conn->prepare("SELECT SUM(cost) AS cost FROM tasks WHERE project = ?");
+    	$selStmt = $sel->execute(array($id));
+    	
+    	$cost = $sel->fetch();
+    	if (!empty($cost)) {
+    		return $cost;
+    	}
+    	else {
+    		return false;
+    	}
+    }
 
+    /**
+     * get the 	actual cost in hour of a project
+     *
+     * @param int $id - the project id
+     * @return array|boolean - the actual cost or false on error
+     */
+    function getProjectActualCost($id){
+    	global $conn;
+    	$id = (int) $id;
+    	 
+    	$sel = $conn->prepare("SELECT SUM(hours) AS hours FROM timetracker WHERE project = ?");
+    	$selStmt = $sel->execute(array($id));
+    	 
+    	$cost = $sel->fetch();
+    	if (!empty($cost)) {
+    		return $cost;
+    	}
+    	else {
+    		return false;
+    	}
+    }
+    
     /**
      * Listet die aktuellsten Projekte auf
      *

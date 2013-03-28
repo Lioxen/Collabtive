@@ -56,6 +56,8 @@
 								<th class="a"></th>
 								<th class="b">{#milestone#}</th>
 								<th class="c">{#due#}</th>
+								<th class="e">{#target#}</th>
+								<th class="e">{#actual#}</th>
 								<th class="days" style="text-align:right">{#daysleft#}&nbsp;&nbsp;</th>
 								<th class="tools"></th>
 							</tr>
@@ -63,7 +65,7 @@
 
 						<tfoot>
 							<tr>
-								<td colspan="5"></td>
+								<td colspan="7"></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -87,6 +89,8 @@
 											</div>
 										</td>
 										<td class="c">{$milestones[stone].fend}</td>
+										<td class="e">{$milestones[stone].sumcost}</td>
+										<td {if $milestones[stone].sumcost < $milestones[stone].sumhours} class="e marker-late"{else} class="e marker-today"{/if}>{$milestones[stone].sumhours}</td>
 										<td class="days" style="text-align:right">{$milestones[stone].dayslate}&nbsp;&nbsp;</td>
 										<td class="tools">
 											{if $userpermissions.milestones.edit}
@@ -99,7 +103,7 @@
 									</tr>
 
 									<tr class="acc">
-										<td colspan="5">
+										<td colspan="7">
 											<div class="accordion_toggle"></div>
 											<div class="accordion_content">
 												<div class="acc-in">
